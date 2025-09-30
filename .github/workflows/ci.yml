@@ -44,7 +44,7 @@ jobs:
           JAVA_HOME: ${{ env.JAVA_HOME_23_X64 || '' }}
 
       - name: List build outputs
-        run: ls -lh build/libs
+        run: ls -lh ./
 
       - name: Create GitHub Release
         id: create_release

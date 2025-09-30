@@ -6,11 +6,13 @@
  */
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
     application
     id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.gradleup.shadow") version "9.2.1"
 }
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 
 version = findProperty("version") ?: "0.1.0"
 

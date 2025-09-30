@@ -13,8 +13,7 @@ plugins {
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-
-version = findProperty("version") ?: "0.1.0"
+// version = findProperty("version") ?: "0.1.0"
 
 application {
     mainClass.set("org.example.TodoApp")

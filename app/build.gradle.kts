@@ -8,6 +8,7 @@
 plugins {
     application
     id("java")
+    id("maven-publish")
     id("com.gradleup.shadow") version "9.2.1"
 }
 
@@ -78,3 +79,31 @@ tasks.named("startShadowScripts") {
 tasks.build {
     dependsOn(tasks.shadowJar)
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "org.example"
+            artifactId = "todo-app"
+            version = project.version.toString()
+
+            artifact(tasks.named("shadowJar").get()) {
+                classifier = null
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Reshala7539/jaba-todo-app")
+            credentials {
+                username = project.findProperty("gpr.user")?.toString()
+                    ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key")?.toString()
+                    ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+

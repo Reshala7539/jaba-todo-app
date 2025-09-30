@@ -8,7 +8,17 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
+
+version=findProperty('version') ?: '0.1.0'
+
+sourceCompatibility = '21'
+targetCompatibility - '21'
+
+mainClassName = 'org.example.TodoApp'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -40,4 +50,32 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+shadowJar {
+    archiveBaseName.set('todo-app')
+    archiveClassifier.set('')
+    archiveVersion.set(project.version.toString())
+    mergeServiceFiles()
+}
+
+tasks.jar {
+enabled = false
+}
+
+tasks.named('distZip') {
+dependsOn tasks.named('shadowJar')
+}
+tasks.named('distTar') {
+dependsOn tasks.named('shadowJar')
+}
+tasks.named('startScripts') {
+dependsOn tasks.named('shadowJar')
+}
+tasks.named('startShadowScripts') {
+dependsOn tasks.named('jar')
+}
+
+tasks.build {
+dependsOn shadowJar
 }

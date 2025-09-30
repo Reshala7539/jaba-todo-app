@@ -17,7 +17,9 @@ version=findProperty("version") ?: "0.1.0"
 sourceCompatibility = "21"
 targetCompatibility - "21"
 
-mainClassName = "org.example.TodoApp"
+application {
+    mainClass.set("org.example.TodoApp")
+}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -39,11 +41,6 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
-}
-
-application {
-    // Define the main class for the application.
-    mainClass = "org.example.App"
 }
 
 tasks.named<Test>("test") {

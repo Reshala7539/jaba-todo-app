@@ -76,5 +76,5 @@ tasks.named("startShadowScripts") {
 }
 
 tasks.build {
-    dependsOn(tasks.named("shadowJar"))
+    dependsOn(tasks.shadowJar)
 }

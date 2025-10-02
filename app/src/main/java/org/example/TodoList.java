@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TodoList {
-  private final List<String> items = new ArrayList<>();
+  private final List<Task> items = new ArrayList<>();
 
   public void add(String item) {
     if (item != null) {
       item = item.trim();
       if (!item.isEmpty()) {
-        items.add(item);
+        items.add(new Task(item));
       }
     }
   }
@@ -23,11 +23,38 @@ public class TodoList {
     return false;
   }
 
-  public List<String> getAll() {
+  public List<Task> getAll() {
     return new ArrayList<>(items);
   }
 
   public int size() {
     return items.size();
+  }
+
+  public void clear() {
+    items.clear();
+  }
+
+  public void markDone(int index) {
+    if (index >= 0 && index < items.size()) {
+      var t = items.get(index);
+      t.completed = !t.completed;
+    }
+  }
+
+  public boolean search(String substring) {
+    if (substring == null || substring.trim().isEmpty())
+      return false;
+    if (items.isEmpty())
+      return true;
+    boolean found = false;
+    substring = substring.trim().toLowerCase();
+    for (Task task : items) {
+      if (task.text.toLowerCase().contains(substring)) {
+        System.out.println(task);
+        found = true;
+      }
+    }
+    return found;
   }
 }

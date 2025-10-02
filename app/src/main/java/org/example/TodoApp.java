@@ -8,7 +8,8 @@ public class TodoApp {
         TodoList list = new TodoList();
         try (Scanner scanner = new Scanner(System.in)) {
 
-            System.out.println("Simple Todo CLI. Commands: add <task>, remove <index>, list, exit");
+            System.out.println(
+                    "Simple Todo CLI.\nCommands: add <task>, remove <index>, done <index>, search <string>, list, clear, exit");
             while (true) {
                 System.out.print("> ");
                 if (!scanner.hasNextLine())
@@ -43,9 +44,10 @@ public class TodoApp {
                         }
                         break;
                     case "list":
-                        List<String> all = list.getAll();
+                        List<Task> all = list.getAll();
                         for (int i = 0; i < all.size(); i++) {
-                            System.out.printf("%d: %s%n", i, all.get(i));
+                            var task = all.get(i);
+                            System.out.printf("%d: %s%n", i, task.toString());
                         }
                         if (all.isEmpty())
                             System.out.println("(empty)");
@@ -54,6 +56,31 @@ public class TodoApp {
                         System.out.println("Bye!");
                         scanner.close();
                         return;
+                    case "clear":
+                        list.clear();
+                        System.out.println("Tasks cleared.");
+                        break;
+                    case "done":
+                        if (parts.length > 1) {
+                            try {
+                                int idx = Integer.parseInt(parts[1]);
+                                list.markDone(idx);
+                                System.out.println("Done.");
+
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid index.");
+                            }
+                        }
+                        break;
+                    case "search":
+                        if (parts.length > 1) {
+                            String searchable = parts[1].trim().toLowerCase();
+                            if (list.search(searchable))
+                                System.out.println("Found.");
+                            else
+                                System.out.println("Not found.");
+                        }
+                        break;
                     default:
                         System.out.println("Unknown command. Commands: add, remove, list, exit");
                 }
